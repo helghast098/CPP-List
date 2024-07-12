@@ -29,7 +29,7 @@ private:
 	size_t length; // length of list
 
 	/*Helper Functions*/
-	void insert_node_at_cursor(T val);
+	void insert_node_at_cursor(Node *new_node);
 
 public:
 	/*Constructors*/
@@ -152,7 +152,7 @@ current length of list
 	* @note won't do anything if preq not met
 	*/
 	void erase_left();
-}
+};
 
 /** Template Node Implementation **/
 template<class T>
@@ -168,12 +168,18 @@ List<T>::List() {
 	after_cursor = nullptr;
 	before_cursor = nullptr;
 	cursor_pos = 0;
-	len = 0;
+	length = 0;
+}
+
+/*Destructor*/
+template<class T>
+List<T>::~List() {
+	this->clear();
 }
 
 /*length*/
 template<class T>
-size_t List<t>::len() const {
+size_t List<T>::len() const {
 	return this->length;
 }
 
@@ -312,7 +318,7 @@ template<class T>
 void List<T>::insert_left(T val) {
 	// Creating the node
 	Node *new_node = new Node(val);
-	this->insert_node_at_cursor(new_node)
+	this->insert_node_at_cursor(new_node);
 
 	this->before_cursor = new_node;
 	this->cursor_pos += 1;
