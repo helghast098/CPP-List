@@ -28,6 +28,9 @@ private:
 	size_t cursor_pos;
 	size_t length; // length of list
 
+	/*Helper Functions*/
+	void insert_node_at_cursor(T val);
+
 public:
 	/*Constructors*/
 	List();
@@ -40,7 +43,8 @@ public:
 	/*Access Functions*/
 
 	/**
-	* @brief returns current length of list
+	* @brief returns 	// Creating the node
+current length of list
 	* @return size_t
 	*/
 	size_t len() const;
@@ -236,18 +240,18 @@ void List<T>::clear() {
 	{
 		Node *holder = this->tail->left_node;
 
-		this->head->left_node = nullptr;
+		this->tail->left_node = nullptr;
 
-		delete this->head;
+		delete this->tail;
 
 		if (holder != nullptr)
 		{
 			holder->right_node = nullptr;
 		}
-		this->head = holder;
+		this->tail = holder;
 	}
 
-	this->tail = nullptr;
+	this->head = nullptr;
 }
 
 /*cursor move to head*/
@@ -295,38 +299,10 @@ void List<T>::move_left() {
 /*insert to right of cursor*/
 template<class T>
 void List<T>::insert_right(T val) {
-	// Creating the node
+	// Inserting Node
 	Node *new_node = new Node(val);
 
-	if (this->cursor_pos == 0)
-	{
-		if (this->head != nullptr)
-		{
-			this->head->left_node = new_node;
-			new_node->right_node = this->head;
-		}
-		else
-		{
-			this->tail = new_node;
-		}
-		this->head = new_node;
-	}
-	else if (this->cursor_pos == this->length)
-	{
-		this->tail->right_node = new_node;
-		new_node->left_node = this->tail;
-		this->tail = new_node;
-	}
-	else
-	{
-		// Fix left node
-		this->before_cursor->right_node = new_node;
-		new_node->left_node = this->before_cursor;
-
-		// Fix right node
-		this->after_cursor->left_node = new_node;
-		new_node->right_node = this->after_cursor;
-	}
+	this->insert_node_at_cursor(new_node);
 
 	this->after_cursor = new_node;
 
@@ -338,37 +314,7 @@ template<class T>
 void List<T>::insert_left(T val) {
 	// Creating the node
 	Node *new_node = new Node(val);
-
-	if (this->cursor_pos == 0)
-	{
-		if (this->head != nullptr)
-		{
-			this->head->left_node = new_node;
-			new_node->right_node = this->head;
-		}
-		else
-		{
-			this->tail = new_node;
-		}
-		this->head = new_node;
-	}
-	else if (this->cursor_pos == this->length)
-	{
-		this->tail->right_node = new_node;
-		new_node->left_node = this->tail;
-		this->tail = new_node;
-	}
-	else
-	{
-		// Fix left node
-		this->before_cursor->right_node = new_node;
-		new_node->left_node = this->before_cursor;
-
-		// Fix right node
-		this->after_cursor->left_node = new_node;
-		new_node->right_node = this->after_cursor;
-	}
-
+	this->insert_node_at_cursor(new_node)
 	this->before_cursor = new_node;
 	this->cursor_pos += 1;
 	this->length += 1;
@@ -392,7 +338,7 @@ void List<T>::set_left(T new_element) {
 	}
 }
 
-Template<class T>
+template<class T>
 void List<T>::erase_right() {
 	if (this->cursor_pos == 0)
 	{
@@ -411,6 +357,40 @@ void List<T>::erase_right() {
 }
 
 
+/**Helper Functions**/
+template<class T>
+void List<T>::insert_node_at_cursor(Node *new_node) {
+
+	if (this->cursor_pos == 0)
+	{
+		if (this->head != nullptr)
+		{
+			this->head->left_node = new_node;
+			new_node->right_node = this->head;
+		}
+		else
+		{
+			this->tail = new_node;
+		}
+		this->head = new_node;
+	}
+	else if (this->cursor_pos == this->length)
+	{
+		this->tail->right_node = new_node;
+		new_node->left_node = this->tail;
+		this->tail = new_node;
+	}
+	else
+	{
+		// Fix left node
+		this->before_cursor->right_node = new_node;
+		new_node->left_node = this->before_cursor;
+
+		// Fix right node
+		this->after_cursor->left_node = new_node;
+		new_node->right_node = this->after_cursor;
+	}
+}
 
 
 
