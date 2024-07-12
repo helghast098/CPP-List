@@ -301,11 +301,9 @@ template<class T>
 void List<T>::insert_right(T val) {
 	// Inserting Node
 	Node *new_node = new Node(val);
-
 	this->insert_node_at_cursor(new_node);
 
 	this->after_cursor = new_node;
-
 	this->length += 1;
 }
 
@@ -315,6 +313,7 @@ void List<T>::insert_left(T val) {
 	// Creating the node
 	Node *new_node = new Node(val);
 	this->insert_node_at_cursor(new_node)
+
 	this->before_cursor = new_node;
 	this->cursor_pos += 1;
 	this->length += 1;
@@ -340,22 +339,91 @@ void List<T>::set_left(T new_element) {
 
 template<class T>
 void List<T>::erase_right() {
-	if (this->cursor_pos == 0)
+	if (this->after_cursor == nullptr)
 	{
-		// node present
-		if (this->after_cursor != nullptr)
+		return;
+	}
+
+	Node *holder = nullptr;
+
+	if (this->after_cursor == this->head)
+	{
+		holder = this->after_cursor;
+
+		this->head = holder->right_node;
+
+		if (holder == this->tail)
 		{
-			Node *right_neighbor = this->after_cursor->right_node;
-			if (right_neighbor != nullptr)
-			{
-				right_neighbor->left_node = nullptr;
-			}
-			this->after_cursor = right_neighbor;
-			this->head = right_neighbor;
+			this->tail = nullptr;
 		}
 	}
+	else
+	{
+		holder = this->after_cursor;
+		holder->left_node->right_node = holder->right_node;
+
+		if (holder == this->tail)
+		{
+			this->tail = holder->left_node;
+		}
+	}
+
+	if (holder->right_node != nullptr)
+	{
+		holder->right_node->left_node = holder->left_node;
+	}
+	this->length -= 1;
+	this->after_cursor = holder->right_node;
+
+	holder->left_node = nullptr;
+	holder->right_node = nullptr;
+	delete holder;
 }
 
+template<class T>
+void List<T>::erase_left() {
+	if (this->before_cursor == nullptr)
+	{
+		return;
+	}
+
+	Node *holder = nullptr;
+
+	if (this->before_cursor == this->tail)
+	{
+		holder = this->tail;
+
+		if (holder == this->head)
+		{
+			this->head = nullptr;
+		}
+		this->tail = holder->left_node;
+	}
+	else
+	{
+		holder = this->before_cursor;
+
+		holder->right_node->left_node = holder->left_node;
+
+		if (holder == this->head)
+		{
+			this->head = holder->right_node;
+		}
+	}
+
+	if (holder->left_node != nullptr)
+	{
+		holder->left_node->right_node = holder->right_node;
+	}
+	this->length -= 1;
+	this->cursor_pos -= 1;
+	this->before_cursor = holder->left_node;
+
+	holder->left_node = nullptr;
+	holder->right_node = nullptr;
+	delete holder;
+
+}
 
 /**Helper Functions**/
 template<class T>
