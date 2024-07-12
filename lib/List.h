@@ -48,14 +48,14 @@ public:
 	/**
 	* @brief returns front element if present
 	* @preq: List must not be empty
-	* @return type T
+	* @return type optional<T>
 	*/
 	std::optional<T> front() const;
 
 	/**
 	* @brief returns back element if present
 	* @preq: List must not be empty
-	* @return type T
+	* @return type optional<T>
 	*/
 	std::optional<T> back() const;
 
@@ -68,14 +68,14 @@ public:
 	/**
 	* @brief check right element of cursor
 	* @preq: cursor_position() < len()
-	* @return type T
+	* @return type optional<T>
 	*/
 	std::optional<T> peek_right() const;
 
 	/**
 	* @brief check left element of cursor
 	* @preq: cursor_position() > 0
-	* @return type T
+	* @return type optional<T>
 	*/
 	std::optional<T> peek_left() const;
 
@@ -99,6 +99,7 @@ public:
 	/**
 	* @brief move the cursor 1 position right
 	* @preq cursor_pos < len()
+	* @note won't do anything if preq not met
 	*/
 	void move_right();
 
@@ -123,24 +124,28 @@ public:
 	/**
 	* @brief Overwrite right element with value
 	* @preq len() != 0 && cursor_pos < len()
+	* @note won't do anything if preq not met
 	*/
 	void set_right(T new_element);
 
 	/**
 	* @brief Overwrite right element with value
 	* @preq len() != 0 && cursor_pos > 0
+	* @note won't do anything if preq not met
 	*/
 	void set_left(T new_element);
 
 	/**
 	* @brief erase right element
 	* @preq len() != 0 && cursor_pos < len()
+	* @note won't do anything if preq not met
 	*/
 	void erase_right();
 
 	/**
 	* @brief erase left element
 	* @preq len() != 0 && cursor_pos > 0
+	* @note won't do anything if preq not met
 	*/
 	void erase_left();
 }
@@ -227,9 +232,9 @@ void List<T>::clear() {
 	this->before_cursor = nullptr;
 
 	// Deletes all elements 1 by 1
-	while (this->head != nullptr)
+	while (this->tail != nullptr)
 	{
-		Node *holder = this->head->left_node;
+		Node *holder = this->tail->left_node;
 
 		this->head->left_node = nullptr;
 
@@ -326,6 +331,83 @@ void List<T>::insert_right(T val) {
 	this->after_cursor = new_node;
 
 	this->length += 1;
+}
+
+/*insert left of cursor*/
+template<class T>
+void List<T>::insert_left(T val) {
+	// Creating the node
+	Node *new_node = new Node(val);
+
+	if (this->cursor_pos == 0)
+	{
+		if (this->head != nullptr)
+		{
+			this->head->left_node = new_node;
+			new_node->right_node = this->head;
+		}
+		else
+		{
+			this->tail = new_node;
+		}
+		this->head = new_node;
+	}
+	else if (this->cursor_pos == this->length)
+	{
+		this->tail->right_node = new_node;
+		new_node->left_node = this->tail;
+		this->tail = new_node;
+	}
+	else
+	{
+		// Fix left node
+		this->before_cursor->right_node = new_node;
+		new_node->left_node = this->before_cursor;
+
+		// Fix right node
+		this->after_cursor->left_node = new_node;
+		new_node->right_node = this->after_cursor;
+	}
+
+	this->before_cursor = new_node;
+	this->cursor_pos += 1;
+	this->length += 1;
+}
+
+/*set right node value*/
+template<class T>
+void List<T>::set_right(T new_element) {
+	if (this->after_cursor != nullptr)
+	{
+		this->after_cursor->val = new_element;
+	}
+}
+
+/*set right node value*/
+template<class T>
+void List<T>::set_left(T new_element) {
+	if (this->before_cursor != nullptr)
+	{
+		this->before_cursor->val = new_element;
+	}
+}
+
+Template<class T>
+void List<T>::erase_right() {
+	if (this->cursor_pos == 0)
+	{
+		// node present
+		if (this->after_cursor != nullptr)
+		{
+			Node *right_neighbor = this->after_cursor->right_node;
+			if (right_neighbor != nullptr)
+			{
+				right_neighbor->left_node = nullptr;
+			}
+			this->after_cursor = right_neighbor;
+			this->head = right_neighbor;
+		}
+	}
 }
 
 
