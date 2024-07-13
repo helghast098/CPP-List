@@ -22,4 +22,4 @@ The repository has the following file structure:
 ```
 **How to build for testing:**<br>
 `Using cmake:`
-Create a directory named build in the main project directory. On a terminal navigate to build and type `cmake ..` then `make`. The test file can be ran with the command `./ListTest` or using `ctest`.
+Create a directory named build in the main project directory. On a terminal navigate to build and type `cmake ..` then `make`. The test file can be run with the command `./ListTest` or using `ctest`.
