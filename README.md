@@ -8,7 +8,7 @@ The repository has the following file structure:
 | README.md (This File)
 ├── CPP-List
 │   │
-│   ├── lib # Header file of List
+│   ├── include # Header file of List
 │   │   └── List.hpp # Contains templated List Class declaration and function definitions
 │   │  
 │   ├── tests # Contains test files for List class
