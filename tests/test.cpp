@@ -1,6 +1,6 @@
 #include "List.hpp"
 #include "gtest/gtest.h"
-
+#include <iostream>
 TEST(ListTest1, Creation) {
 	List<int> l;
 
@@ -241,6 +241,123 @@ TEST(ListTest7, EraseRightEraseLeft) {
 	EXPECT_EQ(l.back(), std::nullopt);
 
 	// Condition: len = 2;
+	l.insert_right(2);
+	l.insert_right(1);
 
+	l.erase_right();
+
+	EXPECT_EQ(l.cursor_position(), 0);
+	EXPECT_EQ(l.peek_right(), std::optional<int>(2));
+	EXPECT_EQ(l.front(), std::optional<int>(2));
+	EXPECT_EQ(l.back(), std::optional<int>(2));
+
+	l.insert_right(1);
+
+	l.move_right();
+
+	l.erase_left();
+
+	EXPECT_EQ(l.cursor_position(), 0);
+	EXPECT_EQ(l.peek_right(), std::optional<int>(2));
+	EXPECT_EQ(l.peek_left(), std::nullopt);
+	EXPECT_EQ(l.front(), std::optional<int>(2));
+	EXPECT_EQ(l.back(), std::optional<int>(2));
+
+	l.insert_right(1);
+	l.move_right();
+	l.erase_right();
+
+	EXPECT_EQ(l.cursor_position(), 1);
+	EXPECT_EQ(l.peek_right(), std::nullopt);
+	EXPECT_EQ(l.peek_left(), std::optional<int>(1));
+	EXPECT_EQ(l.front(), std::optional<int>(1));
+	EXPECT_EQ(l.back(), std::optional<int>(1));
+
+	l.clear();
+	l.insert_left(1);
+	l.insert_left(2);
+	l.insert_left(3);
+	l.insert_left(4);
+
+	l.move_left();
+	l.move_left();
+
+	l.erase_left();
+
+	EXPECT_EQ(l.cursor_position(), 1);
+	EXPECT_EQ(l.len(), 3);
+	EXPECT_EQ(l.peek_right(), std::optional<int>(3));
+	EXPECT_EQ(l.peek_left(), std::optional<int>(1));
+	EXPECT_EQ(l.front(), std::optional<int>(1));
+	EXPECT_EQ(l.back(), std::optional<int>(4));
+
+	l.insert_left(2);
+
+	l.erase_right();
+
+	EXPECT_EQ(l.cursor_position(), 2);
+	EXPECT_EQ(l.len(), 3);
+	EXPECT_EQ(l.peek_right(), std::optional<int>(4));
+	EXPECT_EQ(l.peek_left(), std::optional<int>(2));
+	EXPECT_EQ(l.front(), std::optional<int>(1));
+	EXPECT_EQ(l.back(), std::optional<int>(4));
+
+	l.insert_right(3);
+
+	// Deleting whole list using erase_right()
+	l.cursor_move_to_head();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		l.erase_right();
+	}
+
+	EXPECT_EQ(l.cursor_position(), 0);
+	EXPECT_EQ(l.len(), 0);
+	EXPECT_EQ(l.peek_right(), std::nullopt);
+	EXPECT_EQ(l.peek_left(), std::nullopt);
+	EXPECT_EQ(l.front(), std::nullopt);
+	EXPECT_EQ(l.back(), std::nullopt);
+
+	// Deleting whole list using erase_left()
+	for (int i = 1; i <= 4; ++i)
+	{
+		l.insert_left(i);
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		l.erase_left();
+	}
+
+	EXPECT_EQ(l.cursor_position(), 0);
+	EXPECT_EQ(l.len(), 0);
+	EXPECT_EQ(l.peek_right(), std::nullopt);
+	EXPECT_EQ(l.peek_left(), std::nullopt);
+	EXPECT_EQ(l.front(), std::nullopt);
+	EXPECT_EQ(l.back(), std::nullopt);
+
+
+}
+
+TEST(ListTest8, Copy) {
+	List<int> l1;
+	for (int i = 1; i <= 10; ++i)
+	{
+		l1.insert_left(i);
+	}
+
+	List<int> l2(l1);
+	EXPECT_EQ(l1.cursor_position(), 10);
+	l1.cursor_move_to_head();
+
+	EXPECT_EQ(l2.len(), 10);
+
+	for (int i = 1; i <= 10; ++i)
+	{
+		EXPECT_EQ(l1.peek_right(), l2.peek_right());
+		l1.move_right();
+		l2.move_right();
+	}
 
 }

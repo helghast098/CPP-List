@@ -171,6 +171,26 @@ List<T>::List() {
 	length = 0;
 }
 
+template<class T>
+List<T>::List(const List &L) {
+	this->head = nullptr;
+	this->tail = nullptr;
+	this->after_cursor = nullptr;
+	this->before_cursor = nullptr;
+	this->cursor_pos = 0;
+	this->length = 0;
+
+	Node *holder = L.head;
+
+	while (holder != nullptr)
+	{
+		this->insert_left(holder->val);
+		holder = holder->right_node;
+	}
+
+	this->cursor_move_to_head();
+
+}
 /*Destructor*/
 template<class T>
 List<T>::~List() {
@@ -178,13 +198,13 @@ List<T>::~List() {
 }
 
 /*length*/
-template<class T>
+template<class T> //
 size_t List<T>::len() const {
 	return this->length;
 }
 
 /*head value*/
-template<class T>
+template<class T> //
 std::optional<T> List<T>::front() const {
 	if (this->head == nullptr)
 	{
@@ -195,7 +215,7 @@ std::optional<T> List<T>::front() const {
 }
 
 /*tail value*/
-template<class T>
+template<class T> //
 std::optional<T> List<T>::back() const {
 	if (this->tail == nullptr)
 	{
@@ -206,7 +226,7 @@ std::optional<T> List<T>::back() const {
 }
 
 /*cursor position*/
-template<class T>
+template<class T> //
 size_t List<T>::cursor_position() const {
 	return this->cursor_pos;
 }
