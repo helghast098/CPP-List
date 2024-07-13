@@ -9,7 +9,7 @@ The repository has the following file structure:
 ├── CPP-List
 │   │
 │   ├── lib # Header file of List
-│   │   └── List.hpp # Contains templated List Class declaration and functions
+│   │   └── List.hpp # Contains templated List Class declaration and function definitions
 │   │  
 │   ├── tests # Contains test files for List class
 │   │   └── test.cpp # Test file that uses gtest to test the various methods of the List Class
