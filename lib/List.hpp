@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////
 // Created By: Fabert O. Charles
-// File: List ADT Function Declarations
+// File: List Function Declarations and Definitions
 ///////////////////////////////////////////////
 #ifndef LIST_H
 #define LIST_H
