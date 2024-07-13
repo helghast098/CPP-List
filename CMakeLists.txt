@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #creating lib interface for list
 add_library(LibList INTERFACE)
-target_include_directories(LibList INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+target_include_directories(LibList INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 #creating test exec
 add_executable(ListTest "${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp")
